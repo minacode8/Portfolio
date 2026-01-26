@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>GreenVerse Park</title>
+
+<style>
+:root{
+  --ink:#0b2a1c;
+  --muted: rgba(11,42,28,.72);
+  --line: rgba(0,0,0,.10);
+  --card: rgba(255,255,255,.82);
+  --glass: rgba(255,255,255,.62);
+  --shadow: 0 24px 70px rgba(0,0,0,.16);
+
+  --green:#22c55e;
+  --lime:#b6ff6a;
+  --sky:#7dd3fc;
+  --sun:#ffd93d;
+  --pink:#ff4fd8;
+  --violet:#7c5cff;
+
+  --r: 26px;
+  --navH: 74px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--ink);
+  overflow-x:hidden;
+
+  /* Clean park vibe */
+  background:
+    linear-gradient(180deg, rgba(125,211,252,.55), rgba(167,243,208,.70) 35%, rgba(34,197,94,.10) 65%, rgba(255,255,255,1)),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=80")
+    center/cover no-repeat fixed;
+}
+
+/* Mouse trail dots */
+.trail{
+  position:fixed;
+  width:10px; height:10px;
+  border-radius:999px;
+  pointer-events:none;
+  z-index:5000;
+  mix-blend-mode: multiply;
+  opacity:.95;
+  transform: translate(-50%, -50%);
+  animation: trailFade .55s ease-out forwards;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+}
+@keyframes trailFade{
+  to{ transform: translate(-50%, -50%) scale(0); opacity:0; }
+}
+
+a{color:inherit;text-decoration:none}
+img{display:block; max-width:100%}
+
+/* NAV */
+nav{
+  position:sticky; top:0; z-index:1000;
+  height:var(--navH);
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0 22px;
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,.70);
+  border-bottom: 1px solid var(--line);
+}
+.brand{
+  display:flex; align-items:center; gap:12px;
+  font-weight:1000; letter-spacing:-.2px;
+}
+.logo{
+  width:42px;height:42px;border-radius:16px;
+  background: linear-gradient(135deg, var(--green), var(--lime));
+  box-shadow: 0 18px 60px rgba(34,197,94,.25);
+}
+.links{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+.links a{
+  color: rgba(11,42,28,.75);
+  font-weight:900;
+  padding:10px 12px;
+  border-radius:14px;
+  transition:.2s;
+}
+.links a:hover{background: rgba(255,255,255,.55); color:var(--ink)}
+
+.right{display:flex; gap:10px; align-items:center}
+
+/* BUTTONS */
+.btn{
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.78);
+  color:var(--ink);
+  padding:12px 16px;
+  border-radius:16px;
+  font-weight:1000;
+  cursor:pointer;
+  transition:.2s transform, .2s filter, .2s background;
+  box-shadow: 0 12px 30px rgba(0,0,0,.12);
+}
+.btn:hover{ transform: translateY(-2px); filter: brightness(1.03); }
+.btn.primary{
+  border:none;
+  background: linear-gradient(135deg, #22c55e, #b6ff6a);
+  color:#083018;
+  box-shadow: 0 16px 40px rgba(34,197,94,.25);
+}
+
+/* LAYOUT */
+.wrap{width:min(1120px, calc(100% - 32px)); margin:0 auto}
+
+/* HERO */
+.hero{
+  position:relative;
+  min-height: calc(100vh - var(--navH));
+  display:grid;
+  place-items:center;
+  padding: 34px 0 26px;
+  overflow:hidden; /* keep sky inside hero */
+}
+.hero-box{
+  width:min(980px, calc(100% - 12px));
+  border-radius: 40px;
+  padding: 46px 28px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  border:1px solid var(--line);
+  text-align:center;
+  position:relative;
+  z-index:2; /* above sky */
+}
+.hero h1{
+  font-size: clamp(40px, 6vw, 74px);
+  margin: 0;
+  letter-spacing:-1px;
+}
+.hero p{
+  margin: 16px auto 0;
+  max-width: 70ch;
+  color: var(--muted);
+  line-height:1.65;
+  font-weight:750;
+}
+.hero-actions{
+  margin-top: 18px;
+  display:flex; gap: 10px; justify-content:center; flex-wrap:wrap;
+}
+.pills{
+  margin-top: 18px;
+  display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+}
+.pill{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:10px 12px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.65);
+  font-weight:900;
+  color: rgba(11,42,28,.70);
+}
+.dot{
+  width:10px;height:10px;border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #fff, var(--green));
+  box-shadow: 0 0 0 5px rgba(34,197,94,.18);
+}
+
+/* SKY lives ONLY inside hero (not fixed) */
+.sky{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  overflow:hidden;
+}
+.sun{
+  position:absolute;
+  width:190px;height:190px;
+  border-radius:999px;
+  left:8vw; top:10vh;
+  background: radial-gradient(circle at 35% 35%, #fff, var(--sun) 40%, rgba(255,217,61,.2) 70%, transparent 75%);
+  animation: sunFloat 6s ease-in-out infinite;
+}
+@keyframes sunFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.cloud{
+  position:absolute;
+  width:280px;height:95px;
+  border-radius:999px;
+  background: rgba(255,255,255,.85);
+  box-shadow: 0 18px 50px rgba(0,0,0,.10);
+  opacity:.9;
+}
+.cloud::before,.cloud::after{
+  content:"";
+  position:absolute;
+  background: inherit;
+  border-radius:999px;
+}
+.cloud::before{width:130px;height:130px; left:34px; top:-48px}
+.cloud::after{width:150px;height:150px; left:120px; top:-64px}
+.c1{top:12vh; left:-360px; animation: drift 22s linear infinite}
+.c2{top:24vh; left:-520px; transform:scale(.82); animation: drift 30s linear infinite}
+.c3{top:36vh; left:-640px; transform:scale(1.08); animation: drift 38s linear infinite}
+@keyframes drift{
+  to{transform: translateX(calc(100vw + 900px)) scale(var(--s,1))}
+}
+
+/* Birds */
+.bird{
+  position:absolute;
+  width:18px;height:10px;
+  border:2px solid transparent;
+  border-top:2px solid rgba(0,0,0,.35);
+  border-radius:50%;
+  opacity:.75;
+  animation: birdFly 16s linear infinite;
+}
+.bird::after{
+  content:"";
+  position:absolute;
+  width:18px;height:10px;
+  left:10px; top:-2px;
+  border:2px solid transparent;
+  border-top:2px solid rgba(0,0,0,.35);
+  border-radius:50%;
+}
+@keyframes birdFly{
+  from{transform:translateX(-30px) translateY(0)}
+  to{transform:translateX(calc(100vw + 60px)) translateY(-40px)}
+}
+
+/* Parallax scene inside hero */
+.scene{
+  position:relative;
+  height: 340px;
+  margin-top: 22px;
+  border-radius: 34px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.layer{
+  position:absolute; inset:0;
+  background-position:center;
+  background-size:cover;
+  will-change: transform;
+}
+.layer.back{
+  background-image:url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=80");
+  filter:saturate(1.15) contrast(1.05);
+}
+.layer.mid{
+  background-image:url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=2400&q=80");
+  opacity:.55;
+  mix-blend-mode:multiply;
+}
+.layer.front{
+  background-image:url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2400&q=80");
+  opacity:.40;
+}
+
+/* SECTIONS */
+section{
+  padding: 82px 0;
+  background: rgba(255,255,255,.60);
+  border-top: 1px solid var(--line);
+  backdrop-filter: blur(8px);
+}
+.section-head{
+  text-align:center;
+  margin-bottom: 30px;
+}
+.section-head h2{
+  margin:0;
+  font-size: clamp(28px, 3.4vw, 44px);
+  letter-spacing:-.7px;
+}
+.section-head p{
+  margin: 12px auto 0;
+  max-width: 72ch;
+  color: var(--muted);
+  font-weight: 750;
+  line-height:1.6;
+}
+
+/* Adventures cards */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+}
+.card{
+  grid-column: span 4;
+  background: var(--card);
+  border:1px solid var(--line);
+  border-radius: 30px;
+  overflow:hidden;
+  box-shadow: var(--shadow);
+  transition:.25s transform;
+}
+.card:hover{transform: translateY(-8px) rotate(-.3deg)}
+.card img{width:100%; height:190px; object-fit:cover}
+.card .pad{padding: 16px}
+.card h3{margin: 0 0 8px; letter-spacing:-.2px}
+.card p{margin:0; color: var(--muted); line-height:1.5; font-weight:750}
+
+/* Map + Planner */
+.split{
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 14px;
+  align-items: stretch;
+}
+.panel{
+  background: var(--card);
+  border:1px solid var(--line);
+  border-radius: 30px;
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.panel.pad{padding:18px}
+.map{
+  height: 320px;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.45)),
+    url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2400&q=80")
+    center/cover no-repeat;
+}
+.panel h3{margin: 0 0 8px; letter-spacing:-.2px}
+.panel p{margin:0; color: var(--muted); line-height:1.6; font-weight:750}
+.plan{
+  display:grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+.item{
+  display:flex; gap: 12px; align-items:flex-start;
+  padding: 12px;
+  border-radius: 18px;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.55);
+}
+.badge{
+  flex:0 0 auto;
+  font-weight: 1000;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--green), var(--lime));
+  color:#083018;
+}
+.small{font-size:13px}
+
+/* Stats counters */
+.stats{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.stat{
+  background: var(--glass);
+  border:1px solid var(--line);
+  border-radius: 26px;
+  padding: 18px;
+  text-align:center;
+  box-shadow: var(--shadow);
+}
+.stat b{
+  display:block;
+  font-size: 46px;
+  letter-spacing:-.8px;
+  color: var(--green);
+}
+.stat small{color: var(--muted); font-weight:900}
+
+/* Gallery */
+.gallery{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+}
+.g{
+  grid-column: span 3;
+  border-radius: 26px;
+  overflow:hidden;
+  cursor:pointer;
+  position:relative;
+  box-shadow: var(--shadow);
+  border:1px solid var(--line);
+  background:#fff;
+}
+.g.big{grid-column: span 6}
+.g img{
+  width:100%; height: 240px; object-fit:cover;
+  transition:.45s transform;
+  transform: scale(1.02);
+}
+.g:hover img{transform: scale(1.10) rotate(.35deg)}
+.g::after{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.48));
+}
+.g .cap{
+  position:absolute; left:14px; right:14px; bottom:12px;
+  display:flex; justify-content:space-between; gap:10px;
+  color:#fff;
+  font-weight:1000;
+  z-index:2;
+}
+.g .cap span{opacity:.85; font-size:12px}
+
+/* CTA */
+.cta{
+  border-radius: 44px;
+  padding: 56px 18px;
+  background: linear-gradient(135deg, rgba(34,197,94,.38), rgba(125,211,252,.42), rgba(255,79,216,.18));
+  border:1px solid var(--line);
+  box-shadow: var(--shadow);
+  text-align:center;
+}
+.cta h2{margin:0; font-size: clamp(34px, 4vw, 54px); letter-spacing:-.8px}
+.cta p{margin: 12px auto 0; max-width: 70ch; color: var(--muted); font-weight:800; line-height:1.6}
+
+/* Footer */
+footer{
+  padding: 28px 0 44px;
+  text-align:center;
+  color: rgba(11,42,28,.72);
+  font-weight: 800;
+}
+
+/* Modal */
+.modal{
+  position:fixed; inset:0;
+  display:none;
+  place-items:center;
+  background: rgba(0,0,0,.75);
+  z-index:2000;
+  padding:16px;
+}
+.modal.open{display:grid}
+.modal .box{
+  width:min(980px, 100%);
+  border-radius: 28px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 40px 120px rgba(0,0,0,.55);
+}
+.modal img{width:100%; height:min(70vh, 680px); object-fit:cover}
+.modal .bar{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding: 12px 12px;
+  border-top: 1px solid rgba(0,0,0,.10);
+}
+.modal b{letter-spacing:-.2px}
+.modal small{color: rgba(11,42,28,.72); font-weight:900}
+.x{
+  width:42px;height:42px;
+  border-radius: 16px;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.80);
+  color: var(--ink);
+  font-weight: 1000;
+  cursor:pointer;
+}
+
+/* Confetti */
+.confetti{
+  position:fixed;
+  width:10px;height:14px;
+  top:-20px;
+  border-radius: 4px;
+  z-index:3000;
+  pointer-events:none;
+  animation: confettiFall 1.8s linear forwards;
+}
+@keyframes confettiFall{
+  to{transform: translateY(110vh) rotate(720deg); opacity:0}
+}
+
+/* Responsive */
+@media (max-width: 980px){
+  .links{display:none}
+  .card{grid-column: span 6}
+  .stats{grid-template-columns: 1fr}
+  .g{grid-column: span 6}
+  .g.big{grid-column: span 12}
+  .split{grid-template-columns: 1fr}
+}
+@media (max-width: 560px){
+  nav{padding: 0 14px}
+  .hero-box{padding: 34px 16px}
+}
+</style>
+</head>
+
+<body>
+<nav>
+  <div class="brand">
+    <span class="logo" aria-hidden="true"></span>
+    <span>GreenVerse Park</span>
+  </div>
+
+  <div class="links" aria-label="Primary navigation">
+    <a href="#adventures">Adventures</a>
+    <a href="#planner">Plan</a>
+    <a href="#stats">Stats</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#visit">Visit</a>
+  </div>
+
+  <div class="right">
+    <button class="btn" id="confettiBtn" type="button" title="Confetti">🎉</button>
+    <a class="btn primary" href="#visit">Get tickets</a>
+  </div>
+</nav>
+
+<main class="hero" id="top">
+  <!-- SKY is inside hero only -->
+  <div class="sky" aria-hidden="true">
+    <div class="sun"></div>
+    <div class="cloud c1" style="--s:1"></div>
+    <div class="cloud c2" style="--s:.82"></div>
+    <div class="cloud c3" style="--s:1.08"></div>
+
+    <div class="bird" style="top:18vh; left:-30px; animation-delay:0s"></div>
+    <div class="bird" style="top:26vh; left:-30px; animation-delay:2.8s"></div>
+    <div class="bird" style="top:34vh; left:-30px; animation-delay:6s"></div>
+  </div>
+
+  <div class="hero-box">
+    <h1>Colorful Park, Clean Design 🌿</h1>
+    <p>
+      Now the sun and clouds stay in the hero only. Scroll down and you’ll find
+      clean sections, cards, a planner, animated counters, and a gallery modal.
+      Pure HTML + CSS + basic JavaScript.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn primary" id="heroConfetti" type="button">Confetti Blast</button>
+      <a class="btn" href="#gallery">See moments</a>
+      <a class="btn" href="#adventures">Explore rides</a>
+    </div>
+
+    <div class="pills">
+      <span class="pill"><span class="dot"></span>Hero sky only</span>
+      <span class="pill"><span class="dot"></span>Parallax scene</span>
+      <span class="pill"><span class="dot"></span>Modal gallery</span>
+    </div>
+
+    <div class="scene" id="scene" aria-label="Parallax park scene">
+      <div class="layer back"></div>
+      <div class="layer mid"></div>
+      <div class="layer front"></div>
+    </div>
+  </div>
+</main>
+
+<section id="adventures">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>🎢 Adventures</h2>
+      <p>Hover for motion. Scroll for more. Everything is designed to feel like a real site.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <img alt="Forest"
+          src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=2400&q=80">
+        <div class="pad">
+          <h3>Jungle Coaster</h3>
+          <p>Fast turns through green tunnels, with music and mist (imaginary, but cool).</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <img alt="Ferris wheel"
+          src="https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=2400&q=80">
+        <div class="pad">
+          <h3>Sky Wheel</h3>
+          <p>Big views, soft wind, and the best photos in the whole park.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <img alt="Trail"
+          src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2400&q=80">
+        <div class="pad">
+          <h3>Hidden Trail</h3>
+          <p>A calm path with colorful signs and secret shortcuts to the lake.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="planner">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>🗺️ Plan Your Day</h2>
+      <p>When you scroll down, you should see “more stuff”. Here’s a planner + map block.</p>
+    </div>
+
+    <div class="split">
+      <div class="panel">
+        <div class="map" aria-label="Park map photo"></div>
+      </div>
+
+      <div class="panel pad">
+        <h3>Suggested route</h3>
+        <p>Follow this for a smooth day. Tap “Shuffle” to randomize your plan.</p>
+
+        <div class="plan" id="plan">
+          <div class="item"><span class="badge">10:00</span><div><b>Entrance + Welcome Garden</b><div class="small">Grab a map, take photos.</div></div></div>
+          <div class="item"><span class="badge">11:00</span><div><b>Jungle Coaster</b><div class="small">Best before it gets crowded.</div></div></div>
+          <div class="item"><span class="badge">13:00</span><div><b>Picnic Zone</b><div class="small">Chill under trees.</div></div></div>
+          <div class="item"><span class="badge">15:00</span><div><b>Lake Walk</b><div class="small">Golden hour photos.</div></div></div>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <button class="btn primary" id="shuffleBtn" type="button">Shuffle plan</button>
+          <button class="btn" id="toastBtn" type="button">Save (fake)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stats">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>🌱 Park Stats</h2>
+      <p>Counters animate when this section becomes visible.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b data-count="128">0</b><small>Tree Zones</small></div>
+      <div class="stat"><b data-count="32">0</b><small>Attractions</small></div>
+      <div class="stat"><b data-count="999">0</b><small>Daily Smiles</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>📸 Gallery</h2>
+      <p>Click any photo. Modal opens. Press Esc to close.</p>
+    </div>
+
+    <div class="gallery">
+      <div class="g big" data-title="Green Tunnel" data-sub="Unsplash hotlink">
+        <img alt="Green tunnel" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=80">
+        <div class="cap"><span>Green Tunnel</span><span>Click</span></div>
+      </div>
+
+      <div class="g" data-title="Forest Floor" data-sub="Unsplash hotlink">
+        <img alt="Forest" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=2400&q=80">
+        <div class="cap"><span>Forest Floor</span><span>Click</span></div>
+      </div>
+
+      <div class="g" data-title="Golden Trail" data-sub="Unsplash hotlink">
+        <img alt="Trail" src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2400&q=80">
+        <div class="cap"><span>Golden Trail</span><span>Click</span></div>
+      </div>
+
+      <div class="g" data-title="Mountain View" data-sub="Unsplash hotlink">
+        <img alt="Mountain" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2400&q=80">
+        <div class="cap"><span>Mountain View</span><span>Click</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="wrap">
+    <div class="cta">
+      <h2>😍 Ready to Visit?</h2>
+      <p>
+        This is the “real site” structure: hero is a scene, then the page becomes sections with content.
+        If you want, I can add: ticket pricing, FAQ accordion, and a contact form like your first site.
+      </p>
+      <div class="hero-actions" style="margin-top:18px">
+        <button class="btn primary" id="buyBtn" type="button">Buy Tickets (fake)</button>
+        <a class="btn" href="#top">Back to top</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> GreenVerse Park • Pure HTML/CSS/JS • Unsplash hotlinks
+</footer>
+
+<!-- MODAL -->
+<div class="modal" id="modal" aria-hidden="true" role="dialog" aria-label="Image modal">
+  <div class="box">
+    <img id="mImg" alt="Expanded image"/>
+    <div class="bar">
+      <div>
+        <b id="mTitle">Title</b><br/>
+        <small id="mSub">Sub</small>
+      </div>
+      <button class="x" id="mClose" type="button">✕</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Mouse trail
+let lastT = 0;
+window.addEventListener('mousemove', (e) => {
+  const now = performance.now();
+  if (now - lastT < 14) return;
+  lastT = now;
+
+  const d = document.createElement('div');
+  d.className = 'trail';
+  d.style.left = e.clientX + 'px';
+  d.style.top  = e.clientY + 'px';
+
+  const colors = ['#22c55e','#b6ff6a','#ffd93d','#ff4fd8','#7c5cff','#7dd3fc'];
+  d.style.background = colors[Math.floor(Math.random()*colors.length)];
+
+  const s = 6 + Math.random()*10;
+  d.style.width = s + 'px';
+  d.style.height = s + 'px';
+
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 650);
+  }, { passive:true });
+
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const el=document.querySelector(a.getAttribute('href'));
+      if(!el) return;
+      e.preventDefault();
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  // Parallax scene (3 layers)
+  const scene = document.getElementById('scene');
+  const back = scene.querySelector('.back');
+  const mid  = scene.querySelector('.mid');
+  const front= scene.querySelector('.front');
+  function parallax(){
+    const y = window.scrollY;
+    back.style.transform  = `translateY(${y * 0.03}px)`;
+    mid.style.transform   = `translateY(${y * 0.06}px)`;
+    front.style.transform = `translateY(${y * 0.09}px)`;
+  }
+  window.addEventListener('scroll', parallax, {passive:true});
+  parallax();
+
+  // Confetti
+  function confettiBurst(amount=70){
+    const colors=['#22c55e','#b6ff6a','#ffd93d','#ff4fd8','#7c5cff','#7dd3fc'];
+    for(let i=0;i<amount;i++){
+      const c=document.createElement('div');
+      c.className='confetti';
+      c.style.left = (Math.random()*100)+'vw';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = (1.1 + Math.random()*1.2)+'s';
+      c.style.transform = `translateY(-20px) rotate(${Math.random()*360}deg)`;
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(), 2300);
+    }
+  }
+  document.getElementById('confettiBtn').addEventListener('click', ()=>confettiBurst(60));
+  document.getElementById('heroConfetti').addEventListener('click', ()=>confettiBurst(85));
+  document.getElementById('buyBtn').addEventListener('click', ()=>{
+    confettiBurst(100);
+    toast('Tickets bought (fake).');
+  });
+
+  // Animated counters on view
+  function animateCount(el, target, duration=900){
+    const t0 = performance.now();
+    function tick(now){
+      const p = Math.min(1, (now-t0)/duration);
+      const eased = 1 - Math.pow(1-p, 3);
+      el.textContent = Math.floor(target*eased).toLocaleString();
+      if(p<1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  const countEls = document.querySelectorAll('[data-count]');
+  const countIO = new IntersectionObserver((entries)=>{
+    entries.forEach(ent=>{
+      if(!ent.isIntersecting) return;
+      const el=ent.target;
+      const n=parseInt(el.getAttribute('data-count'),10)||0;
+      animateCount(el, n, 1100);
+      countIO.unobserve(el);
+    });
+  }, {threshold:.55});
+  countEls.forEach(el=>countIO.observe(el));
+
+  // Gallery modal
+  const modal = document.getElementById('modal');
+  const mImg = document.getElementById('mImg');
+  const mTitle = document.getElementById('mTitle');
+  const mSub = document.getElementById('mSub');
+  const mClose = document.getElementById('mClose');
+
+  function openModal(src,title,sub){
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    mImg.src=src;
+    mTitle.textContent=title||'Image';
+    mSub.textContent=sub||'';
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    mImg.src='';
+    document.body.style.overflow='';
+  }
+  document.querySelectorAll('.g').forEach(g=>{
+    g.addEventListener('click', ()=>{
+      const img=g.querySelector('img');
+      openModal(img.src, g.dataset.title, g.dataset.sub);
+    });
+  });
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+  mClose.addEventListener('click', closeModal);
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+  // Planner shuffle
+  const plan = document.getElementById('plan');
+  const shuffleBtn = document.getElementById('shuffleBtn');
+  const routes = [
+    [
+      ["10:00","Welcome Garden","Grab a map, take photos."],
+      ["11:00","Sky Wheel","Best view early."],
+      ["13:00","Picnic Zone","Chill under trees."],
+      ["15:00","Hidden Trail","Golden hour photos."]
+    ],
+    [
+      ["10:00","Lake Walk","Soft morning light."],
+      ["12:00","Jungle Coaster","Before lunch crowd."],
+      ["14:00","Ice Cream Spot","Recover energy."],
+      ["16:00","Sky Wheel","Sunset view."]
+    ],
+    [
+      ["10:30","Entrance Show","Colorful welcome."],
+      ["12:00","Hidden Trail","Find secret signs."],
+      ["14:30","Picnic Zone","Rest + snacks."],
+      ["17:00","Lake Walk","Sunset photos."]
+    ]
+  ];
+
+  shuffleBtn.addEventListener('click', ()=>{
+    const r = routes[Math.floor(Math.random()*routes.length)];
+    plan.innerHTML = r.map(x=>(
+      `<div class="item">
+        <span class="badge">${x[0]}</span>
+        <div><b>${x[1]}</b><div class="small">${x[2]}</div></div>
+      </div>`
+    )).join("");
+    toast('Plan shuffled.');
+  });
+
+  // Simple toast
+  function toast(msg){
+    const t=document.createElement('div');
+    t.textContent=msg;
+    t.style.position='fixed';
+    t.style.left='50%';
+    t.style.bottom='18px';
+    t.style.transform='translateX(-50%)';
+    t.style.zIndex='4000';
+    t.style.padding='12px 14px';
+    t.style.borderRadius='16px';
+    t.style.border='1px solid var(--line)';
+    t.style.background='rgba(255,255,255,.80)';
+    t.style.backdropFilter='blur(12px)';
+    t.style.color='var(--ink)';
+    t.style.fontWeight='1000';
+    t.style.boxShadow='0 18px 60px rgba(0,0,0,.22)';
+    document.body.appendChild(t);
+    setTimeout(()=>t.style.opacity='0', 1400);
+    setTimeout(()=>t.remove(), 1850);
+  }
+
+  document.getElementById('toastBtn').addEventListener('click', ()=>toast('Saved (fake).'));
+</script>
+</body>
+</html>

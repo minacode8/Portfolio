@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bakery Shop ChatGPT's</title>
+
+  <style>
+    :root{
+      --bg:#0f0f12;
+      --surface:#16161b;
+      --surface2:#1d1d24;
+      --text:#f3f3f5;
+      --muted:#b8b8c2;
+      --brand:#ffb000;
+      --brand2:#ff6a00;
+      --ring: rgba(255,176,0,.35);
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --shadow2: 0 12px 30px rgba(0,0,0,.28);
+      --radius: 16px;
+      --radius2: 22px;
+      --max: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 10% -10%, rgba(255,176,0,.18), transparent 55%),
+                  radial-gradient(900px 600px at 90% 10%, rgba(255,106,0,.13), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+
+    /* Layout helpers */
+    .container{max-width:var(--max); margin:0 auto; padding:0 18px}
+    .grid{display:grid; gap:18px}
+
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(15,15,18,.65);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .topbar-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .brand .badge{
+      width:40px; height:40px; border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.25) 35%, rgba(255,255,255,0) 60%),
+                  linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow: 0 10px 25px rgba(255,176,0,.18);
+      display:grid; place-items:center;
+      color:#1b1203;
+      font-weight:900;
+    }
+    .nav{
+      display:flex; align-items:center; gap:10px;
+      flex-wrap:wrap;
+    }
+    .nav a{
+      padding:8px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:650;
+      transition:.2s;
+    }
+    .nav a:hover{
+      color:var(--text);
+      background: rgba(255,255,255,.06);
+    }
+    .cta{
+      display:flex; gap:10px; align-items:center;
+    }
+    .btn{
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:750;
+      transition:.2s;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn:hover{transform: translateY(-1px); box-shadow: var(--shadow2)}
+    .btn.primary{
+      border:1px solid rgba(255,176,0,.35);
+      background: linear-gradient(135deg, rgba(255,176,0,.95), rgba(255,106,0,.95));
+      color:#1b1203;
+    }
+    .btn.primary:hover{
+      box-shadow: 0 18px 40px rgba(255,176,0,.18);
+    }
+
+    /* Hero */
+    .hero{
+      padding:56px 0 22px;
+    }
+    .hero-card{
+      border-radius: var(--radius2);
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.72)),
+        url("images/BackGround.jpg") center/cover no-repeat;
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .hero-inner{
+      padding:44px 20px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:end;
+    }
+    .hero h1{
+      margin:0 0 10px;
+      font-size: clamp(28px, 5vw, 52px);
+      line-height:1.05;
+      letter-spacing:-.6px;
+    }
+    .hero p{
+      margin:0 0 18px;
+      color: rgba(255,255,255,.86);
+      max-width: 52ch;
+      font-size: 16px;
+    }
+    .hero-meta{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.88);
+      font-weight:650;
+      font-size: 13px;
+    }
+    .hero-panel{
+      background: rgba(15,15,18,.55);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding:16px;
+      box-shadow: 0 14px 35px rgba(0,0,0,.35);
+    }
+    .hero-panel h3{
+      margin:0 0 10px;
+      font-size: 14px;
+      letter-spacing:.3px;
+      color: rgba(255,255,255,.86);
+      text-transform: uppercase;
+    }
+    .hours{
+      display:grid;
+      gap:10px;
+      font-size: 14px;
+      color: rgba(255,255,255,.84);
+    }
+    .row{
+      display:flex; justify-content:space-between; gap:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .row b{color: var(--text)}
+    .row span{color: rgba(255,255,255,.72)}
+    .notice{
+      margin-top:12px;
+      font-size: 13px;
+      color: rgba(255,255,255,.72);
+    }
+
+    /* Sections */
+    section{padding:34px 0}
+    .section-title{
+      display:flex; align-items:end; justify-content:space-between; gap:12px;
+      margin-bottom: 14px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size: 22px;
+      letter-spacing:-.2px;
+    }
+    .section-title p{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Menu filters */
+    .filters{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin: 12px 0 18px;
+    }
+    .chip{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.82);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:650;
+      cursor:pointer;
+      transition:.2s;
+      user-select:none;
+    }
+    .chip:hover{transform: translateY(-1px)}
+    .chip.active{
+      border-color: rgba(255,176,0,.38);
+      box-shadow: 0 0 0 4px var(--ring);
+      background: rgba(255,176,0,.12);
+      color: var(--text);
+    }
+
+    /* Cards */
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:16px;
+    }
+    .card{
+      grid-column: span 3;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      transition:.2s;
+      display:flex;
+      flex-direction:column;
+      min-height: 100%;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      border-color: rgba(255,176,0,.30);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+    }
+    .card .img{
+      height: 190px;
+      overflow:hidden;
+      position:relative;
+    }
+    .card .img img{
+      width:100%; height:100%;
+      object-fit:cover;
+      transform: scale(1.03);
+      transition:.25s;
+    }
+    .card:hover .img img{transform: scale(1.08)}
+    .tag{
+      position:absolute; left:12px; top:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(15,15,18,.68);
+      border:1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.86);
+      font-weight:700;
+      font-size:12px;
+      backdrop-filter: blur(6px);
+    }
+    .card .body{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+    .name{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .name h3{
+      margin:0;
+      font-size: 16px;
+      letter-spacing:-.2px;
+    }
+    .price{
+      font-weight:900;
+      color: #1b1203;
+      background: linear-gradient(135deg, rgba(255,176,0,.95), rgba(255,106,0,.95));
+      padding:6px 10px;
+      border-radius:999px;
+      font-size: 13px;
+      white-space:nowrap;
+    }
+    .desc{
+      margin:0;
+      color: rgba(255,255,255,.78);
+      font-size: 13.5px;
+    }
+    .actions{
+      display:flex; gap:10px; margin-top:auto;
+    }
+    .mini{
+      padding:9px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.88);
+      font-weight:750;
+      cursor:pointer;
+      transition:.2s;
+      width:100%;
+      text-align:center;
+    }
+    .mini:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 12px 25px rgba(0,0,0,.25);
+      border-color: rgba(255,176,0,.25);
+    }
+
+    /* About / Address */
+    .split{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+    }
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      padding:16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .panel h3{margin:0 0 10px}
+    .panel p{margin:0; color: rgba(255,255,255,.80)}
+    .panel .list{
+      margin:12px 0 0; padding:0; list-style:none;
+      display:grid; gap:10px;
+    }
+    .panel .list li{
+      padding:10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      color: rgba(255,255,255,.84);
+      font-size: 14px;
+    }
+    .panel .list b{color: var(--text)}
+
+    /* Footer */
+    footer{
+      padding:24px 0 34px;
+      color: rgba(255,255,255,.70);
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .footer-inner{
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+      flex-wrap:wrap;
+    }
+    .small{font-size: 13px}
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero-grid{grid-template-columns: 1fr}
+      .card{grid-column: span 6}
+      .split{grid-template-columns: 1fr}
+    }
+    @media (max-width: 520px){
+      .nav{display:none}
+      .card{grid-column: span 12}
+      .hero-inner{padding:34px 16px}
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#home" aria-label="Bakery Shop Home">
+        <div class="badge">B</div>
+        <div>
+          <div style="font-size:14px; line-height:1.1;">Bakery Shop</div>
+          <div style="font-size:12px; color:var(--muted); font-weight:650;">Fresh daily • Handmade</div>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#address">Address</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="cta">
+        <a class="btn" href="#menu">View menu</a>
+        <a class="btn primary" href="#contact">Order now</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="container">
+        <div class="hero-card">
+          <div class="hero-inner">
+            <div class="hero-grid">
+              <div>
+                <h1>Warm bread, flaky pastries, and coffee that hits.</h1>
+                <p>
+                  Everything is baked fresh every morning using simple ingredients.
+                  Come early for croissants and sourdough.
+                </p>
+
+                <div class="cta" style="justify-content:flex-start;">
+                  <a class="btn primary" href="#menu">Explore today’s specials</a>
+                  <a class="btn" href="#address">Find us</a>
+                </div>
+
+                <div class="hero-meta" aria-label="Highlights">
+                  <div class="pill">Fresh daily</div>
+                  <div class="pill">Custom cakes</div>
+                  <div class="pill">Delivery available</div>
+                  <div class="pill">Gluten-free options</div>
+                </div>
+              </div>
+
+              <aside class="hero-panel" aria-label="Hours">
+                <h3>Opening Hours</h3>
+                <div class="hours">
+                  <div class="row"><b>Sat - Thu</b><span>8:00 AM → 10:00 PM</span></div>
+                  <div class="row"><b>Friday</b><span>2:00 PM → 11:00 PM</span></div>
+                </div>
+                <div class="notice">Tip: Add a real Google Maps link in the Address section.</div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Our Menu</h2>
+            <p>Clean layout, consistent cards, and a tiny filter.</p>
+          </div>
+          <p class="small">Prices are examples</p>
+        </div>
+
+        <div class="filters" aria-label="Menu categories">
+          <span class="chip active" data-filter="all">All</span>
+          <span class="chip" data-filter="bread">Bread</span>
+          <span class="chip" data-filter="pastry">Pastries</span>
+          <span class="chip" data-filter="cake">Cakes</span>
+        </div>
+
+        <div class="cards" id="menuGrid">
+          <!-- Bread -->
+          <article class="card" data-cat="bread">
+            <div class="img">
+              <img src="images/bread-loaf.jpg" alt="Sourdough Bread" />
+              <span class="tag">Bread</span>
+            </div>
+            <div class="body">
+              <div class="name">
+                <h3>Sourdough</h3>
+                <span class="price">$3.50</span>
+              </div>
+              <p class="desc">Crispy crust, soft inside, fermented overnight for flavor.</p>
+              <div class="actions">
+                <button class="mini">Add to cart</button>
+                <button class="mini">Details</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card" data-cat="bread">
+            <div class="img">
+              <img src="images/dark-bread.jpg" alt="Whole Wheat Bread" />
+              <span class="tag">Bread</span>
+            </div>
+            <div class="body">
+              <div class="name">
+                <h3>Whole Wheat</h3>
+                <span class="price">$2.90</span>
+              </div>
+              <p class="desc">Hearty and filling, perfect for sandwiches and toast.</p>
+              <div class="actions">
+                <button class="mini">Add to cart</button>
+                <button class="mini">Details</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Pastry -->
+          <article class="card" data-cat="pastry">
+            <div class="img">
+              <img src="images/croissant.jpg" alt="Butter Croissant" />
+              <span class="tag">Pastry</span>
+            </div>
+            <div class="body">
+              <div class="name">
+                <h3>Butter Croissant</h3>
+                <span class="price">$2.20</span>
+              </div>
+              <p class="desc">Flaky layers, real butter, baked until golden.</p>
+              <div class="actions">
+                <button class="mini">Add to cart</button>
+                <button class="mini">Details</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card" data-cat="pastry">
+            <div class="img">
+              <img src="images/pie.jpg" alt="Apple Pie Slice" />
+              <span class="tag">Pastry</span>
+            </div>
+            <div class="body">
+              <div class="name">
+                <h3>Apple Pie</h3>
+                <span class="price">$2.80</span>
+              </div>
+              <p class="desc">Cinnamon apples with a flaky crust. Classic comfort.</p>
+              <div class="actions">
+                <button class="mini">Add to cart</button>
+                <button class="mini">Details</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Cake -->
+          <article class="card" data-cat="cake">
+            <div class="img">
+              <img src="images/strawberry-cupcake.jpg" alt="Chocolate Cake Slice" />
+              <span class="tag">Cake</span>
+            </div>
+            <div class="body">
+              <div class="name">
+                <h3>Chocolate Cake</h3>
+                <span class="price">$3.90</span>
+              </div>
+              <p class="desc">Rich cocoa, soft sponge, smooth ganache on top.</p>
+              <div class="actions">
+                <button class="mini">Add to cart</button>
+                <button class="mini">Details</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card" data-cat="cake">
+            <div class="img">
+              <img src="images/colorful-cupcake.jpg" alt="Vanilla Berry Cake Slice" />
+              <span class="tag">Cake</span>
+            </div>
+            <div class="body">
+              <div class="name">
+                <h3>Vanilla Berry</h3>
+                <span class="price">$4.10</span>
+              </div>
+              <p class="desc">Light vanilla cake with berries and whipped cream.</p>
+              <div class="actions">
+                <button class="mini">Add to cart</button>
+                <button class="mini">Details</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT + ADDRESS -->
+    <section id="about">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Why people come back</h2>
+            <p>Simple, believable, and clean copy.</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="panel">
+            <h3>About us</h3>
+            <p>
+              We focus on a small menu done really well. That means better quality,
+              faster service, and consistent taste every day.
+            </p>
+            <ul class="list">
+              <li><b>Fresh batches</b> every morning and afternoon</li>
+              <li><b>Custom cakes</b> with 24–48h notice</li>
+              <li><b>Simple ingredients</b> and real butter</li>
+            </ul>
+          </div>
+
+          <div class="panel" id="address">
+            <h3>Address</h3>
+            <p>Put your real address here. Add a Google Maps link for credibility.</p>
+            <ul class="list">
+              <li><b>Location:</b> 123 Bakery Street, Your City</li>
+              <li><b>Phone:</b> +20 000 000 0000</li>
+              <li><b>Delivery:</b> 10:00 AM → 9:00 PM</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Contact</h2>
+            <p>Clean form, no backend needed for now.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <form onsubmit="event.preventDefault(); alert('Saved! (Add backend later)');">
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+              <label>
+                <div style="font-weight:750; margin-bottom:6px; color:rgba(255,255,255,.82);">Name</div>
+                <input required
+                  style="width:100%; padding:12px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.06); color:var(--text); outline:none;"
+                  placeholder="Your name" />
+              </label>
+
+              <label>
+                <div style="font-weight:750; margin-bottom:6px; color:rgba(255,255,255,.82);">Phone</div>
+                <input required
+                  style="width:100%; padding:12px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.06); color:var(--text); outline:none;"
+                  placeholder="+20..." />
+              </label>
+            </div>
+
+            <label style="display:block; margin-top:14px;">
+              <div style="font-weight:750; margin-bottom:6px; color:rgba(255,255,255,.82);">Message</div>
+              <textarea required rows="4"
+                style="width:100%; padding:12px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.06); color:var(--text); outline:none; resize:vertical;"
+                placeholder="Tell us what you want to order..."></textarea>
+            </label>
+
+            <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+              <button class="btn primary" type="submit">Send</button>
+              <a class="btn" href="#menu">Back to menu</a>
+            </div>
+
+            <div class="notice">Later: connect this to EmailJS / Google Forms / your backend.</div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="small">© 2026 Bakery Shop. All rights reserved.</div>
+      <div class="small">Built with HTML + CSS (no frameworks).</div>
+    </div>
+  </footer>
+
+  <script>
+    // Tiny menu filter (no libraries)
+    const chips = document.querySelectorAll(".chip");
+    const cards = document.querySelectorAll(".card");
+
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        chips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+
+        const filter = chip.dataset.filter;
+        cards.forEach(card => {
+          const cat = card.dataset.cat;
+          card.style.display = (filter === "all" || cat === filter) ? "" : "none";
+        });
+      });
+    });
+  </script>
+</body>
+</html>

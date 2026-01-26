@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Atlas Estates – Premium Real Estate</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* =====================
+   RESET & VARIABLES
+===================== */
+:root{
+  --bg:#0f1116;
+  --surface:#171a23;
+  --surface2:#1f2330;
+  --text:#f4f6fb;
+  --muted:#9aa3b2;
+  --gold:#d4af37;
+  --accent:#5da9e9;
+  --radius:18px;
+  --radius-sm:12px;
+  --max:1200px;
+  --shadow:0 30px 80px rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* =====================
+   GLOBAL
+===================== */
+.container{
+  max-width:var(--max);
+  margin:auto;
+  padding:0 20px;
+}
+section{margin:110px 0}
+h2{
+  font-size:36px;
+  margin-bottom:12px;
+}
+p.sub{
+  color:var(--muted);
+  max-width:70ch;
+  margin-bottom:40px;
+}
+.btn{
+  display:inline-block;
+  padding:14px 28px;
+  border-radius:999px;
+  font-weight:800;
+  text-decoration:none;
+  transition:.25s;
+}
+.btn.primary{
+  background:linear-gradient(135deg,var(--gold),#f0d97c);
+  color:#111;
+}
+.btn.secondary{
+  border:1px solid rgba(255,255,255,.15);
+  color:var(--text);
+}
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 15px 40px rgba(0,0,0,.45);
+}
+
+/* =====================
+   NAVBAR
+===================== */
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(15,17,22,.8);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 0;
+}
+.logo{
+  font-weight:900;
+  letter-spacing:1px;
+}
+.logo span{color:var(--gold)}
+.nav-links a{
+  margin-left:22px;
+  text-decoration:none;
+  color:var(--muted);
+  font-weight:600;
+}
+.nav-links a:hover{color:#fff}
+
+/* =====================
+   HERO
+===================== */
+.hero{
+  min-height:90vh;
+  background:
+    linear-gradient(to bottom,rgba(15,17,22,.85),rgba(15,17,22,.4)),
+    url("https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1600&q=80")
+    center/cover no-repeat;
+  display:flex;
+  align-items:center;
+}
+.hero-content{
+  max-width:700px;
+}
+.hero h1{
+  font-size:clamp(42px,5vw,66px);
+  margin:0 0 16px;
+}
+.hero p{
+  font-size:18px;
+  color:var(--muted);
+}
+
+/* =====================
+   STATS
+===================== */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:24px;
+}
+.stat{
+  background:var(--surface);
+  padding:28px;
+  border-radius:var(--radius);
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+.stat h3{
+  font-size:40px;
+  margin:0;
+  color:var(--gold);
+}
+.stat span{color:var(--muted)}
+
+/* =====================
+   PROPERTY FILTER
+===================== */
+.filters{
+  display:flex;
+  gap:12px;
+  margin-bottom:30px;
+}
+.filters button{
+  padding:12px 22px;
+  border-radius:999px;
+  background:var(--surface2);
+  border:none;
+  color:var(--muted);
+  font-weight:700;
+  cursor:pointer;
+}
+.filters button.active{
+  background:linear-gradient(135deg,var(--accent),#8ec5ff);
+  color:#0f1116;
+}
+
+/* =====================
+   PROPERTY CARDS
+===================== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:26px;
+}
+.card{
+  background:var(--surface);
+  border-radius:var(--radius);
+  overflow:hidden;
+  transition:.35s;
+}
+.card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 40px 90px rgba(0,0,0,.6);
+}
+.card img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+}
+.card .pad{
+  padding:22px;
+}
+.card h3{margin:0 0 6px}
+.card .price{
+  color:var(--gold);
+  font-weight:900;
+  font-size:22px;
+}
+.card p{
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* =====================
+   AGENTS
+===================== */
+.agent img{height:320px}
+
+/* =====================
+   TESTIMONIALS
+===================== */
+.testimonial{
+  background:var(--surface);
+  padding:28px;
+  border-radius:var(--radius);
+}
+.testimonial p{color:var(--muted)}
+
+/* =====================
+   PLANS
+===================== */
+.plan{
+  background:var(--surface);
+  padding:30px;
+  border-radius:var(--radius);
+}
+.plan.featured{
+  outline:3px solid var(--gold);
+  transform:scale(1.03);
+}
+.plan h3{margin-top:0}
+.plan .price{
+  font-size:38px;
+  font-weight:900;
+  color:var(--gold);
+}
+
+/* =====================
+   FAQ
+===================== */
+.faq{
+  background:var(--surface);
+  padding:22px;
+  border-radius:var(--radius-sm);
+  margin-bottom:12px;
+  cursor:pointer;
+}
+.faq p{
+  display:none;
+  color:var(--muted);
+}
+
+/* =====================
+   FOOTER
+===================== */
+footer{
+  margin-top:120px;
+  border-top:1px solid rgba(255,255,255,.1);
+  padding:50px 20px;
+  text-align:center;
+  color:var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container navbar">
+    <div class="logo">Atlas<span>Estates</span></div>
+    <nav class="nav-links">
+      <a href="#properties">Properties</a>
+      <a href="#agents">Agents</a>
+      <a href="#plans">Plans</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-content">
+    <h1>Luxury Homes & Smart Investments</h1>
+    <p>
+      Atlas Estates connects buyers, sellers, and investors with premium properties
+      in the world’s most desirable locations.
+    </p>
+    <a class="btn primary" href="#properties">Browse Properties</a>
+  </div>
+</section>
+
+<section class="container">
+  <div class="stats">
+    <div class="stat"><h3>1,200+</h3><span>Properties Sold</span></div>
+    <div class="stat"><h3>$2.4B</h3><span>Total Transactions</span></div>
+    <div class="stat"><h3>18</h3><span>Countries Covered</span></div>
+    <div class="stat"><h3>99%</h3><span>Client Satisfaction</span></div>
+  </div>
+</section>
+
+<section id="properties" class="container">
+  <h2>Featured Properties</h2>
+  <p class="sub">Hand-picked homes, apartments, and investment opportunities.</p>
+
+  <div class="filters">
+    <button class="active" data-filter="all">All</button>
+    <button data-filter="villa">Villas</button>
+    <button data-filter="apartment">Apartments</button>
+    <button data-filter="commercial">Commercial</button>
+  </div>
+
+  <div class="grid">
+    <div class="card villa">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80">
+      <div class="pad">
+        <h3>Modern Beach Villa</h3>
+        <div class="price">$2,400,000</div>
+        <p>5 Beds • 4 Baths • Ocean View</p>
+      </div>
+    </div>
+
+    <div class="card apartment">
+      <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80">
+      <div class="pad">
+        <h3>City Luxury Apartment</h3>
+        <div class="price">$980,000</div>
+        <p>3 Beds • Downtown</p>
+      </div>
+    </div>
+
+    <div class="card commercial">
+      <img src="https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=1600&q=80">
+      <div class="pad">
+        <h3>Corporate Office Space</h3>
+        <div class="price">$3,750,000</div>
+        <p>Prime Business District</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="agents" class="container">
+  <h2>Meet Our Agents</h2>
+  <p class="sub">Experienced professionals with deep market knowledge.</p>
+
+  <div class="grid">
+    <div class="card agent">
+      <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=1600&q=80">
+      <div class="pad"><h3>Sarah Mitchell</h3><p>Senior Property Advisor</p></div>
+    </div>
+    <div class="card agent">
+      <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1600&q=80">
+      <div class="pad"><h3>David Collins</h3><p>Investment Specialist</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="plans" class="container">
+  <h2>Client Plans</h2>
+  <p class="sub">Tailored services for buyers, sellers, and investors.</p>
+
+  <div class="grid">
+    <div class="plan">
+      <h3>Buyer</h3>
+      <div class="price">$499</div>
+      <p>Property search • Negotiation • Closing support</p>
+    </div>
+
+    <div class="plan featured">
+      <h3>Investor</h3>
+      <div class="price">$1,499</div>
+      <p>Market analysis • ROI forecasting • Portfolio strategy</p>
+    </div>
+
+    <div class="plan">
+      <h3>Seller</h3>
+      <div class="price">$799</div>
+      <p>Listing • Marketing • Buyer screening</p>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <h2>FAQ</h2>
+  <div class="faq"><h4>Do you work internationally?</h4><p>Yes, we operate across multiple global markets.</p></div>
+  <div class="faq"><h4>Do you assist with legal paperwork?</h4><p>Absolutely. Full transaction support is included.</p></div>
+</section>
+
+<footer id="contact">
+  © 2026 Atlas Estates • Premium Real Estate Website (Frontend Demo)
+</footer>
+
+<script>
+/* property filter */
+document.querySelectorAll(".filters button").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".card").forEach(card=>{
+      card.style.display=
+        btn.dataset.filter==="all"||card.classList.contains(btn.dataset.filter)
+        ?"block":"none";
+    });
+  };
+});
+
+/* FAQ */
+document.querySelectorAll(".faq").forEach(f=>{
+  f.onclick=()=>{
+    const p=f.querySelector("p");
+    p.style.display=p.style.display==="block"?"none":"block";
+  };
+});
+</script>
+
+</body>
+</html>

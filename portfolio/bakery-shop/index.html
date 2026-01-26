@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Bakery Shop – Frontend Demo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <style>
+            
+            html{scroll-behavior:smooth;}
+            
+            :root{
+                --bg:#0f0f12;
+                --surface:#16161b;
+                --surface2:#1d1d24;
+                --text:#f3f3f5;
+                --muted:#b8b8c2;
+                --brand:rgb(255, 176, 0);
+                --brand2:rgb(255, 106, 0);
+                --ring:rgba(255,176,0,.35);
+                --shadow:0 18px 50px rgba(0,0,0,.45);
+                --shadow2:0 12px 30px rgba(0,0,0,.28);
+                --radius:16px;
+                --radius2:22px;
+                --max:1100px;
+            }
+
+            body{
+                margin:0;
+                min-height:100vh;
+                background:url(images/background.jpg) center/cover no-repeat;
+                color:var(--text);
+                font-family:system-ui, Arial, sans-serif;
+                display:flex;
+                flex-direction: column;
+            }
+            .page-overlay{
+                position:fixed;
+                inset:0;
+                z-index:-1;
+                background: radial-gradient(1200px 700px at 10% -10%, rgba(255,176,0,.18), transparent 55%),
+                            radial-gradient(900px 600px at 90% 20%, rgba(255,106,0,.13), transparent 55%),
+                            rgba(15,15,18,0.95);
+                backdrop-filter:blur(5px);
+                pointer-events: none;
+            }
+            .topbar{
+                position:sticky; top:0; z-index:100;
+                background-color:rgba(0,0,0,.5);
+                backdrop-filter:blur(10px);
+                padding:10px;
+                border-bottom:1px solid rgba(255,255,255,.08);
+            }
+            .brand{
+                display:flex;
+                align-items:center;
+                gap:10px;
+            }
+            header .container{
+                max-width:var(--max);
+                margin:0 auto;
+                display:flex;
+                align-items:center; justify-content:space-between;
+                gap:16px;
+            }
+            header .container a{
+                text-decoration:none;
+            }
+            .logo{
+                width:40px;
+                height:40px;
+                border-radius:10px;
+                background:linear-gradient(135deg, var(--brand), var(--brand2));
+            }
+            .brand-text{
+                display:flex;
+                flex-direction:column;
+            }
+            .brand strong{
+                font-weight:800;
+                font-size:14px;
+                color:#fff;
+            }
+            .brand span{
+                font-weight:600;
+                font-size:12px;
+                color:var(--muted);
+            }
+            .nav {
+                display:flex;
+                gap:6px;
+            }
+            .nav a{
+                text-decoration:none;
+                padding:8px 15px;
+                color:var(--muted);
+                font-size:16px;
+                border-radius:1000px;
+                transition:0.2s;
+                font-weight:700;
+            }
+            .nav a:hover{
+                background-color:rgba(255,255,255,.06);
+                color:#fff;
+            }
+            .actions{
+                gap:10px;
+                display:flex;
+                flex-wrap:wrap;
+                font-weight:700;
+            }
+            .btn{
+                background-color:rgba(255,255,255,.06);
+                border:1px solid rgba(255,255,255,.08);
+                padding:10px 12px;
+                text-decoration:none;
+                color:#fff;
+                font-size:16px;
+                border-radius:1000px;
+                transition:0.2s;
+            }
+            .btn.primary{
+                background:linear-gradient(135deg, var(--brand), var(--brand2));
+                color:#1b1203;
+            }
+            .btn.primary:hover{
+                background: radial-gradient(
+                    circle 10px 10px,
+                    #ffb000 35%,
+                    #ff6a00 75%
+                );
+                box-shadow: 0 8px 22px rgba(255,176,0,.45);
+            }
+            .btn:hover{
+                background: radial-gradient(
+                    circle 10px 10px,
+                    #ffb000 35%,
+                    #ff6a00 75%
+                );
+                box-shadow: 0 1px 10px rgba(255, 255, 255, 0.45);
+                transform:translateY(-1px);
+            }
+
+
+            /* Hero */
+            .boundries{
+                max-width:1050px;
+                align-self: center;
+                width:100%;
+            }
+            .hero{
+                margin:70px auto;
+                display:flex;
+                flex-wrap:wrap;
+                justify-content:center;
+                align-items:center;
+            }
+            .hero-card{
+                width: 100%;
+                height: 420px;
+                overflow: hidden;
+                border-radius:var(--radius2);
+                position: relative;
+                box-shadow:
+                    0 12px 40px rgba(0,0,0,0.45),
+                    0 0 25px rgba(255,176,0,0.35);
+            }
+            .hero-card img{
+                width:100%;
+                height:100%;
+                object-fit:cover;
+            }
+            .card-overlay2{
+                border-radius:var(--radius2);
+                position:absolute;
+                inset:0;
+                background:linear-gradient(
+                to top,
+                    rgba(255, 106, 0, 0.5) 0%,
+                    rgba(255, 106, 0, 0.8) 1%,
+                    rgba(0, 0, 0, 0.1) 5%,
+                    rgba(0, 0, 0, 0.1) 100%
+                );
+            }
+            .card-overlay{
+                display:flex;
+                padding:40px 20px;
+                margin-bottom: 8px;
+                border-radius:var(--radius2);
+                position:absolute;
+                inset:0;
+                background:linear-gradient(0, rgba(0,0,0,.7), rgba(0,0,0,.1));
+                gap:20px;
+                justify-content:space-between;
+            }
+            .card-left{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                max-width:55%;
+                line-height: 1.05;
+            }
+            .card-left h1{
+                font-size:50px;
+                margin:0;
+                text-shadow:  2px 2px 10px#000000;
+            }
+            .card-left p{
+                color:rgba(255,255,255,.9);
+                text-shadow:  5px 5px 10px#000000;
+            }
+            .card-left .bottom{
+                display:flex;
+                flex-direction:column;
+                margin:10px 0;
+                gap:20px;
+            }
+            .card-left .actions>*{
+                padding:15px;
+            }
+            .hero-card .secondary{
+                backdrop-filter: blur(5px);
+                background-color:rgba(255,255,255,.2);
+                border:1px solid rgba(255, 255, 255,.8);
+            }
+            .card-left ul{
+                display:flex;
+                gap:10px;
+                margin:0;
+                padding:0;
+            }
+            .card-left li{
+                text-decoration:none;
+                list-style:none;
+                padding:12px 15px;
+                border-radius:1000px;
+                background-color:rgba(255,255,255,.06);
+                border:1px solid rgba(255,255,255,.08);
+                box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+                font-size:12px;
+                font-weight: 700;
+                backdrop-filter: blur(3px);
+            }
+            .card-right{
+                display:flex;
+                align-self:flex-end;
+                justify-content: center;
+                background-color:rgba(0,0,0,.4);
+                border:1px solid rgba(255,255,255,.15);
+                border-radius:20px;
+                margin:0;
+                width:40%;
+                box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+                backdrop-filter: blur(3px);
+            }
+            .schedule{
+                width:100%;
+                display:flex;
+                flex-direction:column;
+                padding:20px;
+                line-height: 1.0;
+            }
+            .schedule h4{
+                font-size:14px;
+                margin:0;
+                text-transform: uppercase;
+            }
+            .schedule ul{
+                display:flex;
+                flex-direction:column;
+                padding:0;
+                gap:10px;
+            }
+            .schedule li{
+                text-decoration:none;
+                list-style:none;
+                background-color:rgba(255,255,255,.06);
+                border:1px solid rgba(255,255,255,.08);
+                padding:0 10px;
+                border-radius:15px;
+                display:flex;
+                flex-direction:row;
+                justify-content: space-between;
+                align-items:center;
+                font-size:14px;
+            }
+            .day{
+                font-weight:700;
+            }
+            .hours{
+                color:var(--muted);
+            }
+            .tip{
+                font-size:12px;
+                color:var(--muted);
+                margin:0;
+            }
+
+
+            /* Menu */
+            .menu-head{
+                display:flex;
+                flex-direction:column;
+            }
+            h2{
+                margin:0;
+                font-size:24px;
+            }
+            .menu-head div{
+                display: flex;
+                justify-content: space-between;
+                gap:20px;
+                color: var(--muted);
+            }
+            .menu-body{
+                display:flex;
+                flex-direction:column;
+                width:100%;
+            }
+            .categories{
+                display: flex;
+                gap: 10px;
+                margin-top: 10px;
+                margin-bottom: 30px;
+            }
+            .categories button{
+                text-decoration:none;
+                padding:8px 15px;
+                color:var(--muted);
+                font-size:16px;
+                border-radius:1000px;
+                transition:0.2s;
+                font-weight:700;
+                background-color:rgba(255,255,255,.06);
+                border:1px solid rgba(255,255,255,.08);
+                cursor:pointer;
+            }
+                .categories button:hover{
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                transform: translateY(-1px);
+            }
+                .categories button.active{
+                background: rgba(255,176,0,.12);
+                border-color: var(--ring);
+                box-shadow: 0 0 0 4px var(--ring);
+                color: var(--text);
+            }
+            .cards{
+                display:grid;
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap:20px;
+                width:100%;
+                margin:0;
+                margin-bottom: 70px;
+            }
+            .card{
+                display:flex;
+                flex-direction:column;
+                position:relative;
+                background-color:rgba(255,255,255,.06);
+                border:1px solid rgba(255,255,255,.08);
+                border-radius:var(--radius);
+                box-shadow: var(--shadow2);
+                gap:10px;
+                overflow: hidden;
+                transition: 0.2s;
+            }
+            .card:hover{
+                transform:translateY(-4px);
+                background:linear-gradient(135deg, rgb(255, 176, 0), rgb(255, 106, 0));
+                border:2px solid rgba(255,255,255,.7);
+                box-shadow:rgb(255, 106, 0) 0 0 20px;
+            }
+            .card:hover img{
+                transform:scale(1.05);
+                transition:0.5s;
+            }
+            .card:hover .overlay{
+                
+                transform:scale(1.055);
+                transition:0.5s;
+            }
+            .card:hover:not(.cake) .card-details{
+                transform: translateY(70px);
+                transition:0.5s;
+            }
+            .card:hover:not(.cake) .category{
+                transform: translateY(-70px);
+                transition:0.5s;
+                color:#111;
+            }
+            .card.cake{
+                grid-column: 1 / -1;
+                max-width:none;
+                width:100%;
+            }
+            .card.cake .card-upper{
+                height:320px;
+            }
+            .card.cake .card-info{
+                height:100%;
+                display:flex;
+                flex-direction:column;
+                justify-content:space-between;
+                padding:16px;
+                margin:0;
+            }
+            .card.cake .card-info .top{
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+            }
+            .card.cake .desc{
+                margin:8px 0 0;
+                color:rgba(255,255,255,.85);
+                max-width:60ch;
+                color: var(--muted);
+            }
+            .card.cake .actions{
+                display:flex;
+                justify-content: flex-end;
+                align-self: flex-end;
+                position: absolute;
+                inset:0;
+                margin:55px 20px;
+                gap:10px;
+            }
+            .card.cake .btn{
+                background-color: rgba(255, 0, 0, 0.6);
+                border-color: rgba(255, 0, 0, 0.8);
+            }
+            .card.cake .card-details{
+                display: grid;
+                flex-direction: column;
+            }
+            .card.cake .category{
+                transform: translateY(-20px);
+            }
+            .card.cake .name{
+                transform: translateY(70px);
+                font-size: 30px;
+                color:rgb(255, 0, 0);
+                text-shadow:  3px 3px 2px#000000;
+            }
+            .card.cake .price{
+                transform: translateY(-20px);
+            }
+            .bread{
+                background-color:rgba(255, 120, 0, 0.1);
+            }
+            .pastry{
+                background-color:rgba(255, 190, 0, 0.1);
+            }
+            .pie{
+                background-color:rgba(255, 120, 0, 0.1);
+            }
+            .cupcake{
+                background-color:rgba(180, 0, 255, 0.1);
+            }
+            .cake{
+                background-color:rgba(255, 0, 0, 0.1);
+            }
+            .card-upper{
+                position:relative;
+                width:100%;
+                height:200px;
+                overflow: hidden;
+            }
+            .card img{
+                width: 100%;
+                height: 100%;
+                object-fit:cover;
+            }
+            .card .overlay{
+                position:absolute;
+                inset:0;
+                background: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0.7)0%,
+                    rgba(0, 0, 0, 0.1)30%
+                );
+            }
+            .card-info{
+                position:absolute;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                inset:0;
+                margin: 0 10px 0 10px;
+            }
+            .card .category{
+                background-color: rgba(255, 255, 255, 0.2);
+                border: 1px solid rgba(255,255,255,.3);
+                padding:8px 15px;
+                margin-right: auto;
+                border-radius:1000px;
+                backdrop-filter: blur(10px);
+                transform: translateY(-10px);
+            }
+            .bread .category{
+                color:rgba(255, 120, 0, 1);
+                text-shadow:  2px 2px 2px#000000;
+            }
+            .pastry .category{
+                color:rgba(255, 190, 0, 1);
+                text-shadow:  2px 2px 2px#000000;
+            }
+            .pie .category{
+                color:rgba(255, 120, 0, 1);
+                text-shadow:  2px 2px 2px#000000;
+            }
+            .cupcake .category{
+                color:rgba(180, 0, 255, 1);
+                text-shadow:  2px 2px 2px#000000;
+            }
+            .cake .category{
+                color:rgba(255, 0, 0, 1);
+                text-shadow:  2px 2px 2px#000000;
+            }
+            .card-details{
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+            }
+            .card .name{
+                text-shadow:  2px 2px 10px#000000;
+            }
+            .card .price{
+                background: linear-gradient(135deg, var(--brand), var(--brand2));
+                border-radius: 1000px;
+                padding: 5px 10px;
+                color:#111;
+                font-weight:700;
+            }
+            .card-lower{
+                display:flex;
+                flex-direction:column;
+                justify-content: space-between;
+                margin: 0 10px 10px 10px;
+                gap:10px;
+            }
+            .description{
+                font-size:14px;
+                color:var(--muted);
+            }
+            .card .actions{
+                display:flex;
+            }
+            .card .btn{
+                border-radius:10px;
+            }
+            .card:hover .description{
+                color:rgba(0,0,0,.6);
+            }
+            .card:hover .btn{
+                background-color:rgba(255,255,255,.3);
+                border-color: rgba(255,255,255,.4);
+                color:#111;
+            }
+            .card:hover .tertiary{
+                background-color:rgba(255,255,255,.6);
+                border:1px solid rgba(255,255,255,.8);
+            }
+            .card.cake:hover .btn{
+                background:rgb(255, 234, 188, .8);
+                border: rgba(255,255,255,.4);
+                color:#111;
+            }
+            .card.cake:hover .tertiary{
+                background:rgba(255, 174, 0, .8);
+                border:1px solid rgba(255,255,255,.8);
+            }
+
+
+            /* Info */
+            .info{
+                display:flex;
+                flex-direction:column;
+                width:100%;
+                max-width: 1050px;
+                margin: 0 auto;
+            }
+            .info-top{
+                display:flex;
+                flex-direction:row;
+                gap:20px;
+                margin-bottom: 70px;
+            }
+            .info .container{
+                width:100%;
+                height: auto;
+                display:flex;
+                flex-direction:column;
+                justify-self: space-between;
+                padding:20px;
+                line-height: 1.05;
+                background-color:rgba(255,255,255,.06);
+                border:1px solid rgba(255,255,255,.08);
+                padding:0 10px;
+                border-radius:15px;
+            }
+            .info h4{
+                margin:20px 0;
+                text-transform: uppercase;
+            }
+            .info p{
+                color:var(--muted);
+                margin: 0 0 20px 0;
+            }
+            .info .container p{
+                margin:0;
+            }
+            .info ul{
+                display:flex;
+                flex-direction:column;
+                padding:0;
+                gap:10px;
+            }
+            .info li{
+                text-decoration:none;
+                list-style:none;
+                background-color:rgba(255,255,255,.06);
+                border:1px solid rgba(255,255,255,.08);
+                padding:10px 10px;
+                border-radius:15px;
+                display:flex;
+                flex-direction:row;
+                gap: 10px;
+                align-items:center;
+            }
+            .info .type{
+                font-weight:700;
+                color:white;
+            }
+            .info .details{
+                color:white;
+            }
+
+            .info-bottom{
+                display:flex;
+                flex-direction:column;
+                gap:20px;
+                margin-bottom: 70px;
+            }
+            .info-bottom .container{
+                gap:20px;
+                padding: 20px;
+            }
+            label{
+                font-weight:700;
+                display:block;
+            }
+            .info-bottom input{
+                width:480px;
+                border-radius: 16px;
+                padding: 14px 16px;
+                background: rgba(255,255,255,.06);
+                border: 1px solid rgba(255,255,255,.12);
+                color: var(--text);
+            }
+            .info-bottom textarea{
+                width:97%;
+                border-radius: 16px;
+                padding: 14px 16px;
+                background: rgba(255,255,255,.06);
+                border: 1px solid rgba(255,255,255,.12);
+                color: var(--text);
+            }
+            .info-bottom .data{
+                display:flex;
+                gap:20px;
+                flex-wrap:wrap;
+            }
+            .info-bottom .data > div{
+                flex: 1 1 300px;
+            }
+            .info-bottom input{
+                width:100%;
+                box-sizing:border-box;
+            }
+            .info-bottom .container{
+                box-sizing:border-box;
+            }
+            .info .actions button{
+                font-weight: 700;
+            }
+
+
+            /* Footer */
+            footer{
+                margin:0 20px;
+                border-top:1px solid rgba(255,255,255,.1);
+                display: flex;
+            }
+            footer ul{
+                list-style: none;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 0 auto;
+                padding: 20px 0;
+                max-width: 1050px;
+                width: 100%;
+                color: var(--muted);
+                font-size: 14px;
+            }
+
+
+            /* Media */
+            @media (max-width: 900px){
+                .card-overlay{ flex-direction:column;}
+                .card-left{ max-width:100%; font-size: 90%; margin: auto auto 0 0; gap:20px;}
+                .card-left h1{ font-size:36px;}
+                .card-right{width:auto; margin: 0 auto auto 0; background:none; backdrop-filter: none; border:none; box-shadow: none;}
+                .schedule{padding:0; background:none;}
+                .schedule h4, .schedule .tip{display: none;}
+                .schedule ul{display: flex; flex-direction: row; margin:0;}
+                .schedule li{
+                gap:10px;
+                box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+                backdrop-filter: blur(3px);
+                background-color:rgba(0,0,0,.4);
+                }
+            }
+            @media(max-width: 750px){
+                .hero-card{height: 480px;}
+                .card-left{gap:10px;}
+            }
+            @media(max-width: 380px){
+                .card-overlay{ flex-direction:row;}
+                .card-left{margin:0; gap:0;}
+                .card-left h1{font-size:26px;}
+                .card-left p{font-size:12px;}
+                .card-left ul{flex-direction: column; margin-right: auto;}
+                .card-left li{font-size: 8px; padding:5px 10px;}
+                .card-left .btn.btn.primary{width: 100%;}
+                .card-right{width:auto; right:20px;position:absolute;}
+                .schedule ul{flex-direction: column; gap:20px;}
+                .schedule li{flex-direction: column; padding:20px;}
+                .schedule li p{margin:0;}
+            }
+            @media(max-width: 335px){
+                .card-overlay{ flex-direction:column;}
+                .card-left ul{flex-direction: row;}
+                .card-right{width:auto; position:static;}
+                .schedule ul{flex-direction: row; gap:10px;}
+                .schedule li{flex-direction: row; padding:10px;}
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="home"></div>
+        <div class="page-overlay"></div>
+        
+            <header class="topbar">
+                <div class="container">
+                    <a class="brand" href="#home">
+                        <img class="logo" src="images/logo.png" alt="Bakery Shop logo">
+                        <div class="brand-text">
+                            <strong>Bakery Shop</strong>
+                            <span>Fresh daily &bull; Homemade</span>
+                        </div>
+                    </a>
+
+                    <nav class="nav">
+                        <a href="#home">Home</a>
+                        <a href="#menu">Menu</a>
+                        <a href="#about">About</a>
+                        <a href="#address">Address</a>
+                        <a href="#contact">Contact</a>
+                    </nav>
+
+                    <div class="actions">
+                        <a class="btn secondary" href="#menu">View menu</a>
+                        <a class="btn primary" href="#contact">Order now</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="boundries">
+                <div class="hero">
+                    <div class="hero-card">
+                        <img src="images/background.jpg" alt="Bakery background">
+                        <div class="card-overlay2"></div>
+                        <div class="card-overlay">
+                            <div class="card-left">
+                                <h1>Warm bread, flaky pastries, and coffee that hits.</h1>
+                                <p>Everything is baked fresh every morning using simple ingredients. Come early for croissants and sourdough.</p>
+                                <div class="bottom">
+                                    <nav class="actions">
+                                        <a class="btn primary" href="#menu">Explore today's specials</a>
+                                        <a class="btn secondary" href="#address">Find us</a>
+                                    </nav>
+                                    <ul class="pills">
+                                        <li class="pill">Fresh daily</li>
+                                        <li class="pill">Custom cakes</li>
+                                        <li class="pill">Good quality</li>
+                                        <li class="pill">Delivery available</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-right">
+                                <div class="schedule">
+                                    <h4>Opening Hours</h4>
+                                    <ul>
+                                        <li><p class="day">Sat - Thu</p> <span class="hours">8:00 AM → 10:00 PM</span></li>
+                                        <li><p class="day">Friday</p> <span class="hours">2:00 PM → 11:00 PM</span></li>
+                                    </ul>
+                                    <p class="tip">Tip: You can add a Google Maps link here when using a real address.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="menu" class="menu">
+                    <div class="menu-head">
+                        <h2>Our Menu</h2>
+                        <div>
+                            <p>Explore our delicious offerings, from freshly baked bread to decadent pastries and more.</p>
+                            <p>Cost for quality</p>
+                        </div>
+                    </div>
+
+                    <div class="menu-body">
+                            <div class="categories">
+                                <button type="button" data-filter="all" class="active">All</button>
+                                <button type="button" data-filter="bread">Bread</button>
+                                <button type="button" data-filter="pastry">Pastries</button>
+                                <button type="button" data-filter="pie">Pies</button>
+                                <button type="button" data-filter="cupcake">Cupcakes</button>
+                                <button type="button" data-filter="cake">Cakes</button>
+                            </div>
+
+                            <div class="cards">
+
+                                <!-- BREAD -->
+                                <div class="card bread">
+                                    <div class="card-upper">
+                                        <img src="images/dark-bread.jpg" alt="Dark Rye Bread">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Bread</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Dark Rye Loaf</h3>
+                                            <h4 class="price">$3.50</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Dense rye bread with a deep, rich flavor.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                    </div>
+
+                                <div class="card bread">
+                                    <div class="card-upper">
+                                        <img src="images/white-bread.jpg" alt="White Bread">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Bread</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">White Loaf</h3>
+                                            <h4 class="price">$2.50</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Soft and fluffy everyday white bread.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card bread">
+                                    <div class="card-upper">
+                                        <img src="images/bread-loaf.jpg" alt="Artisan Bread">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Bread</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Artisan Loaf</h3>
+                                            <h4 class="price">$3.00</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Handcrafted loaf with a crispy crust. delicious!</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card bread">
+                                    <div class="card-upper">
+                                        <img src="images/buns.jpg" alt="Bread Buns">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Bread</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Bread Buns</h3>
+                                            <h4 class="price">$2.00</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Soft buns perfect for sandwiches on breakfast.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PASTRY -->
+                                <div class="card pastry">
+                                    <div class="card-upper">
+                                        <img src="images/sweet-patties.jpg" alt="Sweet Pastries">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Pastry</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Sweet Patties</h3>
+                                            <h4 class="price">$2.80</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Golden pastries filled with sweet cream.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card pastry">
+                                    <div class="card-upper">
+                                        <img src="images/croissant.jpg" alt="Croissant">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Pastry</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Butter Croissant</h3>
+                                            <h4 class="price">$2.20</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Flaky French croissant made with butter.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PIE -->
+                                 <div class="card pie">
+                                    <div class="card-upper">
+                                        <img src="images/pie.jpg" alt="Pie">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Pie</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Homestyle Pie</h3>
+                                            <h4 class="price">$4.50</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Flaky crust filled with seasonal fruits and cream.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CUPCAKES -->
+                                <div class="card cupcake">
+                                    <div class="card-upper">
+                                        <img src="images/chocolate-cupcake.jpg" alt="Chocolate Cupcake">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Cupcake</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Chocolate Cupcake</h3>
+                                            <h4 class="price">$2.50</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Rich chocolate cupcake with creamy frosting.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card cupcake">
+                                    <div class="card-upper">
+                                        <img src="images/colorful-cupcake.jpg" alt="Colorful Cupcake">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Cupcake</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Rainbow Cupcake</h3>
+                                            <h4 class="price">$2.70</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Bright vanilla cupcake with colorful frosting.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card cupcake">
+                                    <div class="card-upper">
+                                        <img src="images/cupcake-with-candy-sprinkles.jpg" alt="Sprinkle Cupcake">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Cupcake</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Sprinkle Cupcake</h3>
+                                            <h4 class="price">$2.80</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Vanilla cupcake topped with candy sprinkles.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card cupcake">
+                                    <div class="card-upper">
+                                        <img src="images/orange-cupcakes.jpg" alt="Orange Cupcakes">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Cupcake</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Orange Cupcake</h3>
+                                            <h4 class="price">$2.60</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Citrus-flavored cupcake with orange glaze.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card cupcake">
+                                    <div class="card-upper">
+                                        <img src="images/strawberry-cupcake.jpg" alt="Strawberry Cupcake">
+                                        <div class="overlay"></div>
+                                        <div class="card-info">
+                                        <h5 class="category">Cupcake</h5>
+                                        <div class="card-details">
+                                            <h3 class="name">Strawberry Cupcake</h3>
+                                            <h4 class="price">$2.70</h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-lower">
+                                        <div class="description">Fresh strawberry cupcake with pink frosting.</div>
+                                        <div class="actions">
+                                        <a class="btn tertiary" href="#cart">Add to cart</a>
+                                        <a class="btn" href="#details">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card cake">
+                                    <div class="card-upper">
+                                        <img src="images/birthday-cake.jpg" alt="Birthday Cake">
+                                        <div class="overlay"></div>
+
+                                        <div class="card-info">
+                                        <div class="top">
+                                            <h5 class="category">Cake</h5>
+                                            <h4 class="price">$12.70</h4>
+                                        </div>
+
+                                        <h3 class="name">Birthday Cake</h3>
+                                        <p class="desc">Custom message, 1–2kg, choose flavor & colors.</p>
+                                        <div class="mid">
+                                        </div>
+
+                                        <div class="actions">
+                                            <a class="btn tertiary" href="#cart">Add to cart</a>
+                                            <a class="btn" href="#details">Details</a>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="info">
+                    <h2>Why people come back</h2>
+                    <p>Simple, believable, and clean copy.</p>
+                    <div class="info-top">
+                        <div id="about" class="container">
+                            <div class="container-top">
+                                <h4>About us</h4>
+                                <p>We focus on a small menu done really well. That means better quality, faster service, and consistent taste every day.</p>
+                            </div>
+                            <ul>
+                                <li><p class="type">Fresh batches</p> <span class="details">every morning and afternoon</span></li>
+                                <li><p class="type">Custom cakes</p> <span class="details">with 24–48h notice</span></li>
+                                <li><p class="type">Simple ingredients</p> <span class="details">and real butter</span></li>
+                            </ul>
+                        </div>
+                        <div id="address" class="container">
+                            <div class="container-top">
+                                <h4>Address</h4>
+                                <p>Demo content. Address and map link can be customized.</p>
+                            </div>
+                            <ul>
+                                <li><p class="type">Location:</p> <span class="details">Demo address – replace with real location</span></li>
+                                <li><p class="type">Phone:</p> <span class="details">Demo phone number</span></li>
+                                <li><p class="type">Delivery:</p> <span class="details">10:00 AM → 9:00 PM</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h2>Contact</h2>
+                    <p>Clean form, no backend needed for now.</p>
+                    <div id="contact" class="info-bottom">
+                        <form class="container" action="#" method="post">
+                            <div class="data">
+                                <div class="name">
+                                    <label for="name">Name</label><br>
+                                    <input type="text" id="name" name="name" placeholder="Your name" required>
+                                </div>
+                                                                <div class="email">
+                                    <label for="email">Email</label><br>
+                                    <input type="email" id="email" name="email" placeholder="Your email" required>
+                                </div>
+                            </div>
+
+                            <div class="message">
+                                <label for="message">Message</label><br>
+                                <textarea id="message" name="message" rows="6" placeholder="Write your message..." required></textarea>
+                            </div>
+
+                            <div class="actions">
+                                <button class="btn primary" type="submit">Send</button>
+                                <button class="btn" type="reset">Clear</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <ul>
+                    <li>© 2026 Bakery Shop. All rights reserved.</li>
+                    <li>Frontend demo: HTML, CSS & basic JavaScript (no frameworks).</li>
+                </ul>
+            </footer>
+            <script>
+                window.addEventListener("DOMContentLoaded", () => {
+                    document.querySelectorAll(".categories button").forEach(btn => {
+                    btn.onclick = () => {
+                        document.querySelectorAll(".categories button")
+                        .forEach(b => b.classList.remove("active"));
+                        btn.classList.add("active");
+
+                        document.querySelectorAll(".card").forEach(card => {
+                        card.style.display =
+                            btn.dataset.filter === "all" || card.classList.contains(btn.dataset.filter)
+                            ? ""
+                            : "none";
+                        });
+                    };
+                    });
+                });
+            </script>
+    </body>
+</html>

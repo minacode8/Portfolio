@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PULSE | Tech Startup Platform</title>
+
+<style>
+:root{
+  --bg:#07090f;
+  --panel:#0d1220;
+  --panel2:#12172a;
+  --text:#e6e9ff;
+  --muted:#9aa3ff;
+  --accent:#5d7cff;
+  --accent2:#38f2af;
+  --danger:#ff5d7a;
+
+  --radius:16px;
+  --shadow:0 20px 60px rgba(0,0,0,.55);
+  --glow:0 0 60px rgba(93,124,255,.35);
+  --font: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--text);
+  background:
+    radial-gradient(900px 500px at 20% -10%, rgba(93,124,255,.18), transparent 60%),
+    radial-gradient(700px 500px at 90% 10%, rgba(56,242,175,.15), transparent 60%),
+    var(--bg);
+  overflow-x:hidden;
+}
+
+/* NAV */
+nav{
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter: blur(12px);
+  background: rgba(7,9,15,.75);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.nav{
+  width:min(1200px,92vw);
+  margin:auto;
+  padding:14px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font-weight:900;
+  letter-spacing:2px;
+  font-size:18px;
+}
+.logo span{color:var(--accent)}
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+  margin-left:20px;
+  font-weight:600;
+}
+.nav a:hover{color:var(--text)}
+
+/* HERO */
+header{
+  padding:100px 0 80px;
+}
+.hero{
+  width:min(1200px,92vw);
+  margin:auto;
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:40px;
+}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+}
+
+h1{
+  font-size:clamp(36px,5vw,64px);
+  line-height:1.05;
+  margin:0 0 16px;
+}
+.lead{
+  color:var(--muted);
+  font-size:17px;
+  max-width:60ch;
+}
+
+.actions{
+  margin-top:24px;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  padding:14px 18px;
+  border-radius:999px;
+  border:0;
+  cursor:pointer;
+  font-weight:700;
+  letter-spacing:.3px;
+}
+.btn.primary{
+  background:linear-gradient(0,var(--accent),var(--accent2));
+  border:1px solid rgba(255,255,255,.3);
+  color:#05070d;
+  box-shadow:0 0 10px rgba(255,255,255,.3);
+}
+.btn.ghost{
+  background:transparent;
+  color:var(--text);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+/* PRODUCT MOCK */
+.mock{
+  border-radius:var(--radius);
+  background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:var(--shadow);
+  padding:16px;
+  position:relative;
+}
+.mock::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  box-shadow:0 0 80px rgba(93,124,255,.25);
+  pointer-events:none;
+}
+.screen{
+  background:#05070d;
+  border-radius:12px;
+  padding:16px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.tile{
+  height:90px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#101533,#0c1025);
+  position:relative;
+  overflow:hidden;
+}
+.tile::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,rgba(93,124,255,.25),transparent);
+  transform:translateX(-100%);
+  animation:scan 3s infinite;
+}
+@keyframes scan{
+  to{transform:translateX(100%)}
+}
+
+/* METRICS */
+.metrics{
+  margin-top:80px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+@media(max-width:800px){
+  .metrics{grid-template-columns:1fr}
+}
+.metric{
+  background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border-radius:var(--radius);
+  padding:22px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.metric strong{
+  font-size:32px;
+}
+.metric span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* FEATURES TIMELINE */
+section{
+  padding:90px 0;
+}
+.wrap{
+  width:min(1200px,92vw);
+  margin:auto;
+}
+.timeline{
+  display:grid;
+  gap:30px;
+}
+.step{
+  display:grid;
+  grid-template-columns:60px 1fr;
+  gap:20px;
+  align-items:start;
+}
+.dot{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 20px var(--accent);
+  margin-top:6px;
+}
+.step h3{
+  margin:0 0 6px;
+}
+.step p{
+  margin:0;
+  color:var(--muted);
+}
+
+/* CTA */
+.cta{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#04060c;
+  border-radius:24px;
+  padding:60px 30px;
+  text-align:center;
+  box-shadow:0 0 50px rgba(0, 255, 187, 0.3);
+}
+.cta h2{
+  margin:0 0 14px;
+  font-size:32px;
+}
+
+/* FOOTER */
+footer{
+  padding:50px 0;
+  color:var(--muted);
+  text-align:center;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="nav">
+    <div class="logo">PULSE<span>.</span></div>
+    <div>
+      <a href="#features">Features</a>
+      <a href="#metrics">Metrics</a>
+      <a href="#launch">Launch</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="hero">
+    <div>
+      <h1>Build faster.<br>Ship smarter.</h1>
+      <p class="lead">
+        PULSE is an all-in-one platform that helps startups track product performance,
+        user behavior, and release velocity in real time.
+      </p>
+
+      <div class="actions">
+        <button class="btn primary">Get Early Access</button>
+        <button class="btn ghost">View Demo</button>
+      </div>
+    </div>
+
+    <div class="mock">
+      <div class="screen">
+        <div class="tile"></div>
+        <div class="tile"></div>
+        <div class="tile"></div>
+        <div class="tile"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="metrics">
+  <div class="wrap metrics">
+    <div class="metric">
+      <strong id="m1">0</strong>
+      <span>active teams</span>
+    </div>
+    <div class="metric">
+      <strong id="m2">0</strong>
+      <span>events tracked / day</span>
+    </div>
+    <div class="metric">
+      <strong id="m3">0%</strong>
+      <span>deployment success</span>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Why startups choose PULSE</h2>
+    <div class="timeline">
+      <div class="step">
+        <div class="dot"></div>
+        <div>
+          <h3>Live analytics</h3>
+          <p>See what users do the moment it happens.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="dot"></div>
+        <div>
+          <h3>Release confidence</h3>
+          <p>Every deploy is measured, scored, and logged.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="dot"></div>
+        <div>
+          <h3>Team clarity</h3>
+          <p>One dashboard for product, growth, and engineering.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="launch">
+  <div class="wrap">
+    <div class="cta">
+      <h2>Launch with confidence</h2>
+      <p>Join the next generation of product-driven startups.</p>
+      <br>
+      <button class="btn primary">Request Invite</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 PULSE • Built for modern startups
+</footer>
+
+<script>
+/* animated metrics */
+const animate=(id,target,suffix="")=>{
+  let v=0;
+  const el=document.getElementById(id);
+  const step=Math.ceil(target/60);
+  const i=setInterval(()=>{
+    v+=step;
+    if(v>=target){v=target;clearInterval(i)}
+    el.textContent=v+suffix;
+  },30);
+};
+animate("m1",1240);
+animate("m2",87000);
+animate("m3",99,"%");
+</script>
+
+</body>
+</html>
