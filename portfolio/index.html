@@ -3,196 +3,233 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mina | Front-End Portfolio</title>
-  <meta name="description" content="Front-end portfolio: responsive websites built with HTML, CSS, and JavaScript." />
-  <link rel="stylesheet" href="styles.css">
+  <title>Mina Ayman | Front-End Developer</title>
+  <meta name="description" content="Front-end developer portfolio of Mina Ayman: responsive websites built with HTML, CSS, and JavaScript." />
+  <meta name="theme-color" content="#0b0f17" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
+  <div class="cursor-spotlight" aria-hidden="true"></div>
+
   <header class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="#">Mina Ayman</a>
+      <a class="brand" href="#top" aria-label="Go to top">Mina Ayman</a>
 
-      <nav class="nav">
+      <nav class="nav" aria-label="Primary">
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
   </header>
 
-  <main class="wrap">
-    <section class="hero">
+  <main id="top" class="wrap">
+    <section class="hero" aria-label="Intro">
       <div class="hero-text">
         <div class="badge">Front-End Developer</div>
-        <h1>Clean UI. Responsive layouts. Solid basics.</h1>
+
+        <h1>Front-End Developer building clean, responsive websites.</h1>
         <p class="hero-sub">
-          I build websites using HTML, CSS, and JavaScript. These are my best projects.
+          I focus on modern UI, strong layout, and clean structure using HTML, CSS, and JavaScript.
         </p>
 
         <div class="hero-actions">
           <a class="btn" href="#projects">View Projects</a>
-          <a class="btn ghost" href="#contact">Contact Me</a>
+          <a class="btn ghost" href="#contact">Contact</a>
         </div>
 
-        <div class="hero-mini">
-          <div class="mini-card">
-            <div class="mini-title">Focus</div>
-            <div class="mini-text">UI polish, responsive design, clean structure.</div>
+        <div class="hero-mini" role="list">
+          <div class="mini-card" role="listitem">
+            <div class="mini-title">Strengths</div>
+            <div class="mini-text">Responsive design, UI polish, clean structure.</div>
           </div>
-          <div class="mini-card">
+          <div class="mini-card" role="listitem">
             <div class="mini-title">Stack</div>
             <div class="mini-text">HTML, CSS (Flexbox/Grid), JavaScript</div>
           </div>
         </div>
       </div>
 
-      <div class="hero-side">
+      <aside class="hero-side" aria-label="Profile">
         <div class="profile-card">
-          <div class="avatar" aria-hidden="true"></div>
+          <div class="avatar" aria-hidden="true">
+            <img src="images/logo.jpeg" alt="" loading="lazy" />
+          </div>
+
           <div class="profile-info">
-            <div class="profile-name">Mina</div>
+            <div class="profile-name">MinaCode</div>
             <div class="profile-role">Front-End Developer</div>
           </div>
+
           <div class="profile-links">
             <a class="pill" href="mailto:meena22amb@gmail.com">Email</a>
-            <a class="pill" href="https://github.com/YOUR_GITHUB" target="_blank" rel="noreferrer">GitHub</a>
-            <a class="pill" href="https://www.linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noreferrer">LinkedIn</a>
-          </div>
-          <div class="profile-note">
-            Tip: Replace GitHub and LinkedIn links with yours.
+            <a class="pill" href="https://github.com/minacode8" target="_blank" rel="noreferrer">GitHub</a>
+            <a class="pill" href="https://www.linkedin.com/in/mina-ayman-5130a0269/" target="_blank" rel="noreferrer">LinkedIn</a>
           </div>
         </div>
-      </div>
+      </aside>
     </section>
 
-    <section id="projects" class="section">
+    <section id="projects" class="section" aria-label="Projects">
       <div class="section-head">
         <h2>Projects</h2>
-        <p class="section-sub">Click any card to open the live website.</p>
+        <p class="section-sub">Click a card to open the live website.</p>
       </div>
 
       <div class="grid">
-        <a class="card" href="./bakery-shop/" target="_blank">
+        <a class="card" href="./bakery-shop/" target="_blank" rel="noreferrer" aria-label="Open Bakery Shop project">
           <div class="card-top">
             <div class="card-title">Bakery Shop</div>
             <div class="tag">Landing</div>
           </div>
-          <div class="card-desc">A clean landing page layout with product sections and navigation.</div>
-          <div class="card-cta">Open project →</div>
+          <div class="card-desc">Clean landing layout with sections, navigation, and strong spacing.</div>
+          <div class="card-cta">Open project <span aria-hidden="true">→</span></div>
         </a>
 
-        <a class="card" href="./coffee-shop/" target="_blank">
+        <a class="card" href="./coffee-shop/" target="_blank" rel="noreferrer" aria-label="Open Coffee Shop project">
           <div class="card-top">
             <div class="card-title">Coffee Shop</div>
             <div class="tag">Landing</div>
           </div>
-          <div class="card-desc">Modern cafe website with hero section and menu-style layout.</div>
-          <div class="card-cta">Open project →</div>
+          <div class="card-desc">Modern cafe site with hero focus, menu layout, and smooth sections.</div>
+          <div class="card-cta">Open project <span aria-hidden="true">→</span></div>
         </a>
 
-        <a class="card" href="./generating-website/" target="_blank">
+        <a class="card" href="./generating-website/" target="_blank" rel="noreferrer" aria-label="Open Generating Website project">
           <div class="card-top">
             <div class="card-title">Generating Website</div>
             <div class="tag">UI</div>
           </div>
-          <div class="card-desc">A UI-focused page with structured components and sections.</div>
-          <div class="card-cta">Open project →</div>
+          <div class="card-desc">UI-focused page with structured components and consistent styling.</div>
+          <div class="card-cta">Open project <span aria-hidden="true">→</span></div>
         </a>
 
-        <a class="card" href="./gym/" target="_blank">
+        <a class="card" href="./gym/" target="_blank" rel="noreferrer" aria-label="Open Gym project">
           <div class="card-top">
             <div class="card-title">Gym</div>
             <div class="tag">Landing</div>
           </div>
-          <div class="card-desc">Fitness landing page style layout, strong headings and sections.</div>
-          <div class="card-cta">Open project →</div>
+          <div class="card-desc">Fitness landing concept with bold sections and clear hierarchy.</div>
+          <div class="card-cta">Open project <span aria-hidden="true">→</span></div>
         </a>
 
-        <a class="card" href="./park/" target="_blank">
+        <a class="card" href="./park/" target="_blank" rel="noreferrer" aria-label="Open Park project">
           <div class="card-top">
             <div class="card-title">Park</div>
             <div class="tag">Landing</div>
           </div>
-          <div class="card-desc">A simple informational site with layout structure and spacing.</div>
-          <div class="card-cta">Open project →</div>
+          <div class="card-desc">Simple informational site with clean layout and readable spacing.</div>
+          <div class="card-cta">Open project <span aria-hidden="true">→</span></div>
         </a>
 
-        <a class="card" href="./real-estate-agency/" target="_blank">
+        <a class="card" href="./real-estate-agency/" target="_blank" rel="noreferrer" aria-label="Open Real Estate Agency project">
           <div class="card-top">
             <div class="card-title">Real Estate Agency</div>
             <div class="tag">UI</div>
           </div>
-          <div class="card-desc">Cards and sections styled like a real estate listing website.</div>
-          <div class="card-cta">Open project →</div>
+          <div class="card-desc">Card-based UI inspired by real estate listing platforms.</div>
+          <div class="card-cta">Open project <span aria-hidden="true">→</span></div>
         </a>
 
-        <a class="card" href="./tech-startup-app/" target="_blank">
+        <a class="card" href="./tech-startup-app/" target="_blank" rel="noreferrer" aria-label="Open Tech Startup App project">
           <div class="card-top">
             <div class="card-title">Tech Startup App</div>
             <div class="tag">UI</div>
           </div>
-          <div class="card-desc">App-style UI layout with modern spacing and structure.</div>
-          <div class="card-cta">Open project →</div>
+          <div class="card-desc">App-style UI layout with modern spacing and component structure.</div>
+          <div class="card-cta">Open project <span aria-hidden="true">→</span></div>
         </a>
       </div>
     </section>
 
-    <section id="contact" class="section">
+    <section id="contact" class="section" aria-label="Contact">
       <div class="section-head">
         <h2>Contact</h2>
-        <p class="section-sub">Pick any method.</p>
+        <p class="section-sub">Pick the fastest method for you.</p>
       </div>
 
       <div class="contact-grid">
-        <a class="contact-card" href="mailto:meena22amb@gmail.com">
+        <a class="contact-card" href="mailto:meena22amb@gmail.com" aria-label="Email me at meena22amb@gmail.com">
           <div class="contact-title">Email</div>
           <div class="contact-value">meena22amb@gmail.com</div>
           <div class="contact-note">Best for formal messages</div>
         </a>
 
-        <a class="contact-card" href="https://wa.me/201276836524" target="_blank" rel="noreferrer">
+        <a class="contact-card" href="https://wa.me/201276836524" target="_blank" rel="noreferrer" aria-label="Chat with me on WhatsApp">
           <div class="contact-title">WhatsApp</div>
           <div class="contact-value">+20 127 683 6524</div>
           <div class="contact-note">Quick chat</div>
         </a>
 
-        <div class="contact-card">
-            <div class="contact-title">Discord</div>
-            <div class="contact-value">minacode8</div>
-            <div class="contact-note">Add me and send a message</div>
+        <div class="contact-card" aria-label="Discord username">
+          <div class="contact-title">Discord</div>
+          <div class="contact-value">minacode8</div>
+          <div class="contact-note">Username (not a public profile link)</div>
         </div>
 
-        <a class="contact-card" href="https://github.com/minacode8" target="_blank" rel="noreferrer">
+        <a class="contact-card" href="https://github.com/minacode8" target="_blank" rel="noreferrer" aria-label="Visit my GitHub profile">
           <div class="contact-title">GitHub</div>
           <div class="contact-value">github.com/minacode8</div>
-          <div class="contact-note">Code + repos</div>
+          <div class="contact-note">Repositories and code</div>
         </a>
 
-        <a class="contact-card" href="https://www.linkedin.com/in/mina-ayman-5130a0269/" target="_blank" rel="noreferrer">
+        <a class="contact-card" href="https://www.linkedin.com/in/minacode8/" target="_blank" rel="noreferrer" aria-label="Visit my LinkedIn profile">
           <div class="contact-title">LinkedIn</div>
-          <div class="contact-value">linkedin.com/in/mina-ayman-5130a0269</div>
+          <div class="contact-value">linkedin.com/in/minacode8</div>
           <div class="contact-note">Professional profile</div>
         </a>
 
-        <a class="contact-card" href="https://app.netlify.com/teams/meena22amb" target="_blank" rel="noreferrer">
+        <a class="contact-card" href="https://app.netlify.com/teams/minacode8/projects/" target="_blank" rel="noreferrer" aria-label="Open my Netlify live portfolio site">
           <div class="contact-title">Netlify</div>
-          <div class="contact-value">app.netlify.com/teams/meena22amb</div>
-          <div class="contact-note">Live deployment</div>
+          <div class="contact-value">app.netlify.com/teams/minacode8/projects</div>
+          <div class="contact-note">Live portfolio</div>
         </a>
       </div>
 
       <p class="small-note">
-        For Discord: a username alone isn’t a clickable profile. If you want a real link, give me your Discord user ID or send your Discord invite link.
+        Discord usernames are not public profile links. If you want a clickable Discord profile link, use your Discord User ID.
       </p>
     </section>
 
     <footer class="footer">
-      <div>© <span id="year"></span> Mina</div>
+      <div>© <span id="year"></span> Mina Ayman</div>
     </footer>
   </main>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    const spotlight = document.querySelector(".cursor-spotlight");
+
+    window.addEventListener("pointermove", (e) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      spotlight.style.setProperty("--mx", x + "%");
+      spotlight.style.setProperty("--my", y + "%");
+    }, { passive: true });
+
+    const targets = document.querySelectorAll(".btn, .card, .contact-card, .pill");
+
+    targets.forEach((el) => {
+      el.classList.add("ripple");
+
+      el.addEventListener("pointerdown", (e) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+
+        const rect = el.getBoundingClientRect();
+        const ripple = document.createElement("span");
+        ripple.className = "ripple-circle";
+        ripple.style.left = (e.clientX - rect.left) + "px";
+        ripple.style.top = (e.clientY - rect.top) + "px";
+
+        const oldRipple = el.querySelector(".ripple-circle");
+        if (oldRipple) oldRipple.remove();
+
+        el.appendChild(ripple);
+        ripple.addEventListener("animationend", () => ripple.remove());
+      }, { passive: true });
+    });
   </script>
 </body>
 </html>
